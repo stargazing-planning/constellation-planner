@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stargazing App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <!-- Main Section with button to get location and time -->
+        <div class="main-section">
+            <h1>Stargazing Planner</h1>
+            <button id="show-planner-button" onclick="showPlanner()">View My Astronomy Planner</button>
+            <pre id="planner-output"></pre>
+        </div>
+
+        <!-- Space Fact of the Day Section -->
+        <div id="space-fact" class="fact-container">
+            <h2>Space Fact of the Day</h2>
+            <p id="fact-text">Loading fact...</p>
+        </div>
+
+        <!-- Constellation Info Section -->
+        <div id="constellation-info" class="constellation-info-container"></div>
+
+        <!-- Space Trivia Section -->
+        <div id="trivia-section" class="trivia-container">
+            <h2>Space Trivia</h2>
+            <p id="trivia-question"></p>
+            <div id="trivia-options"></div>
+            <button id="next-question">Next Question</button>
+            <p id="trivia-feedback"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
