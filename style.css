@@ -1,63 +1,54 @@
-/* General Styles */
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  background-color: #2f1a47; /* Dark purple background */
+  font-family: Arial, sans-serif;
+  background-color: #1a0e2a; /* dark purple */
   color: white;
-  text-align: center;
-  padding-top: 50px;
 }
 
-.container {
-  margin: 0 auto;
-  max-width: 800px;
+.main-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.top-box {
+  background-color: #2b1546; /* slightly lighter purple */
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px #5c2d91;
 }
 
 button {
-  background-color: #a34dce; /* Lighter purple */
+  background-color: #5c2d91;
   color: white;
   border: none;
-  padding: 15px 30px;
+  padding: 10px 20px;
+  margin-top: 10px;
   font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #9529b2;
-}
-
-#planner-output {
-  margin-top: 20px;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  font-size: 18px;
-  white-space: pre-wrap;
-}
-
-/* Constellation Info Box Styles */
-.constellations-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 2rem;
-  gap: 1rem;
+  background-color: #7646c1;
 }
 
 .constellation-card {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid #ccc;
-  border-radius: 16px;
-  padding: 1rem;
-  width: 250px;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(4px);
-  transition: transform 0.2s ease;
+  border: 1px solid #7646c1;
+  border-radius: 8px;
+  margin: 10px auto;
+  padding: 10px;
+  max-width: 500px;
+  background-color: #1a0e2a;
+  box-shadow: 0 0 8px #7646c1;
 }
 
-.constellation-card:hover {
-  transform: scale(1.05);
+.object-of-the-day {
+  border: 1px solid #7646c1;
+  border-radius: 8px;
+  margin: 20px auto;
+  padding: 15px;
+  max-width: 500px;
+  background-color: #1a0e2a;
+  box-shadow: 0 0 8px #7646c1;
 }

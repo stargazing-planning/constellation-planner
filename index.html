@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  title>Stargazing Planner</title>
-<meta name="description" content="See which constellations are visible in your night sky based on your location and time of year.">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astronomy Planner</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stargazing Guide</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Your Stargazing Guide</h1>
-        <button onclick="showPlanner()">View My Astronomy Planner</button>
-        <pre id="planner-output"></pre>
-        
-        <div class="constellations-container" id="constellation-info">
-            <!-- Constellation info boxes will appear here -->
-        </div>
+  <div class="main-container">
+    <div class="top-box">
+      <h1>Stargazing Guide</h1>
+      <button onclick="showPlanner()">View My Astronomy Planner</button>
+      <pre id="planner-output"></pre>
+      <p id="viewing-time"></p>
     </div>
 
-    <script src="script.js"></script>
+    <div id="constellation-info"></div>
+
+    <div class="object-of-the-day">
+      <h3>🌌 Celestial Object of the Day</h3>
+      <p id="object-text"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

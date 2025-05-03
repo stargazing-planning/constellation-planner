@@ -1,4 +1,3 @@
-// Get the user's location and show planner info
 function showPlanner() {
   document.getElementById("planner-output").innerText = "Getting your location...";
 
@@ -12,8 +11,8 @@ function showPlanner() {
         document.getElementById("planner-output").innerText = 
           `📍 Location: ${lat.toFixed(2)}, ${lon.toFixed(2)}\n🕒 Current Time: ${currentTime}`;
 
-        // Call the function to show visible constellations
         showConstellationInfo(lat);
+        showViewingTime(lat);
       },
       error => {
         document.getElementById("planner-output").innerText = "❌ Geolocation error.";
@@ -22,32 +21,26 @@ function showPlanner() {
   } else {
     document.getElementById("planner-output").innerText = "❌ Geolocation not supported.";
   }
+
+  showObjectOfTheDay(); // Always show this
 }
 
-// Logic to determine which constellations are visible based on latitude and month
 function getVisibleConstellations(lat, month) {
   const visible = [];
-
-  // Simplified rules for visible constellations
   if (lat > -60 && lat < 60) {
-    if (month >= 10 || month <= 2) visible.push("Orion", "Taurus", "Capella", "Canis Major");  // Winter
-    if (month >= 3 && month <= 7) visible.push("Ursa Major", "Leo", "Gemini", "Lyra", "Cygnus");  // Spring/Summer
-    if (month >= 6 && month <= 9) visible.push("Scorpius", "Sagittarius", "Cygnus", "Lyra"); // Summer/Fall
-    if (month >= 8 && month <= 11) visible.push("Andromeda", "Cassiopeia"); // Fall
-    visible.push("Cassiopeia"); // Cassiopeia is circumpolar for most northern latitudes
+    if (month >= 10 || month <= 2) visible.push("Orion", "Taurus", "Capella");
+    if (month >= 3 && month <= 7) visible.push("Ursa Major", "Leo", "Gemini");
+    if (month >= 6 && month <= 9) visible.push("Scorpius", "Sagittarius");
   }
-
-  return [...new Set(visible)]; // Remove duplicates
+  return visible;
 }
 
-// Show constellation info based on location
 function showConstellationInfo(lat) {
-  const month = new Date().getMonth(); // 0 = Jan, 11 = Dec
+  const month = new Date().getMonth();
   const visible = getVisibleConstellations(lat, month);
   const container = document.getElementById("constellation-info");
-  container.innerHTML = ""; // Clear previous
+  container.innerHTML = "";
 
-  // Data for constellations
   const data = {
     "Orion": {
       title: "Orion the Hunter",
@@ -81,35 +74,43 @@ function showConstellationInfo(lat) {
       title: "Capella (The She-Goat)",
       description: "Visible in winter, Capella is one of the brightest stars in the night sky.",
     },
-    "Cassiopeia": {
-      title: "Cassiopeia the Queen",
-      description: "Visible year-round in the northern hemisphere. Recognizable by its W shape.",
-    },
-    "Cygnus": {
-      title: "Cygnus the Swan",
-      description: "Visible in summer, Cygnus flies through the Milky Way and includes the star Deneb.",
-    },
-    "Canis Major": {
-      title: "Canis Major (Great Dog)",
-      description: "Visible in winter, it includes Sirius, the brightest star in the night sky.",
-    },
-    "Andromeda": {
-      title: "Andromeda the Princess",
-      description: "Visible in the fall, home to the Andromeda Galaxy.",
-    },
-    "Lyra": {
-      title: "Lyra the Harp",
-      description: "Visible in summer, Lyra contains the bright star Vega.",
-    }
   };
 
-  // Display the info for visible constellations
   visible.forEach(name => {
-    if (data[name]) {
-      const box = document.createElement("div");
-      box.className = "constellation-card";
-      box.innerHTML = `<h3>${data[name].title}</h3><p>${data[name].description}</p>`;
-      container.appendChild(box);
-    }
+    const box = document.createElement("div");
+    box.className = "constellation-card";
+    box.innerHTML = `<h3>${data[name].title}</h3><p>${data[name].description}</p>`;
+    container.appendChild(box);
   });
+}
+
+// Rough estimate of best viewing hours (night time)
+function showViewingTime(lat) {
+  const date = new Date();
+  const month = date.getMonth();
+  let sunset = 18; // 6pm
+  let sunrise = 6; // 6am
+
+  if (lat > 40) {
+    if (month >= 5 && month <= 7) { sunset = 21; sunrise = 5; } // Summer
+    if (month >= 11 || month <= 1) { sunset = 17; sunrise = 7; } // Winter
+  }
+
+  document.getElementById("viewing-time").innerText = `🔭 Best Viewing Time: ~${sunset}:00 - ${sunrise}:00`;
+}
+
+// Rotating "Celestial Object of the Day"
+function showObjectOfTheDay() {
+  const objects = [
+    "🌕 The Moon — Earth's natural satellite, causing tides and eclipses.",
+    "🪐 Saturn — Known for its stunning rings, visible with a small telescope.",
+    "🌟 Sirius — The brightest star in the night sky, part of Canis Major.",
+    "🌌 Andromeda Galaxy — Our closest galactic neighbor, visible in dark skies.",
+    "🛰️ The ISS — The International Space Station orbits Earth every 90 minutes.",
+    "☄️ Halley's Comet — Only visible from Earth every 76 years.",
+    "🔭 The North Star (Polaris) — Helps with navigation, always in the north.",
+  ];
+  const day = new Date().getDate();
+  const object = objects[day % objects.length];
+  document.getElementById("object-text").innerText = object;
 }
