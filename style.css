@@ -1,102 +1,137 @@
-/* General body and background */
+/* General Body Styles */
 body {
-  background-color: #2A1A6A;  /* Dark purple background */
-  font-family: Arial, sans-serif;
-  color: white;
+  background-color: #2b1c56; /* Dark purple background */
+  font-family: 'Poppins', sans-serif; /* Modern, clean font */
+  color: #ffffff;
   margin: 0;
   padding: 0;
-}
-
-/* The header with space fact of the day */
-#space-fact {
-  background-color: #3e2376;  /* Lighter purple for the header */
-  color: white;
-  padding: 15px;
   text-align: center;
-  border-radius: 10px;
-  margin: 10px;
-}
-
-/* Layout for trivia section */
-#trivia-container {
-  margin: 20px;
-  padding: 15px;
-  background-color: #3e2376;  /* Lighter purple for trivia background */
-  border-radius: 10px;
-}
-
-#trivia-question {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-}
-
-/* Styling for trivia options */
-#trivia-options button {
-  background-color: #5a2d8e;
-  color: white;
-  border: none;
-  padding: 10px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-}
-
-/* Button hover effect */
-#trivia-options button:hover {
-  background-color: #7a4aa2;
-}
-
-/* Display feedback after answering trivia */
-#trivia-feedback {
-  font-size: 1.1em;
-  margin-top: 10px;
-}
-
-/* Styling for location and time box */
-#planner-output {
-  margin: 20px;
-  padding: 15px;
-  background-color: #3e2376;  /* Same light purple */
-  border-radius: 10px;
-}
-
-/* Styling for visible constellations */
-#constellation-info {
   display: flex;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Main Container */
+#container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Title Section */
+h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Button Styling */
+button {
+  background-color: #4f2f89; /* Purple button */
+  color: #cfcfcf;
+  border: 2px solid #2c0038;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+button:hover {
+  background-color: #6f3da1;
+}
+
+/* Space Fact Section */
+#space-fact {
+  background-color: #3c2a63;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 30px;
+}
+
+#space-fact h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+#fact-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Constellation Info Section */
+.constellation-info-container {
+  display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 20px;
+  gap: 20px;
+  margin-top: 30px;
 }
 
 .constellation-card {
-  background-color: #3e2376;
-  color: white;
-  width: 300px;
-  padding: 15px;
-  margin: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #dcdcdc;
+  border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  max-width: 250px;
+  text-align: left;
+  transition: transform 0.3s ease;
 }
 
-/* Styling for the footer */
-footer {
-  text-align: center;
-  padding: 10px;
-  background-color: #3e2376;
-  color: white;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+.constellation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Media query for responsiveness */
+h3 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Responsive Design for Small Screens */
 @media (max-width: 768px) {
-  #constellation-info {
-      flex-direction: column;
+  .main-section {
+    padding: 20px;
   }
-  
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
   .constellation-card {
-      width: 90%;
+    max-width: 90%;
   }
+}
+
+/* Fact Container Styling */
+.fact-container {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Best Time to Stargaze Section */
+.best-time-container {
+  font-size: 1.1rem;
+  color: #acacac;
+  margin-top: 10px;
 }

@@ -1,163 +1,205 @@
-// Space Fact of the Day (Custom Space Fact List)
-const spaceFacts = [
-  "The Sun's mass takes up 99.86% of the total mass of our Solar System.",
-  "There are more stars in the universe than grains of sand on Earth.",
-  "A day on Venus is longer than a year on Venus.",
-  "The largest volcano in the solar system, Olympus Mons, is on Mars.",
-  "Neutron stars are so dense that a single teaspoon would weigh about 6 billion tons.",
-  "A single teaspoon of a black hole's material would weigh more than Mount Everest.",
-  "Saturn's moon Titan has lakes of liquid methane and ethane.",
-  "The closest galaxy to the Milky Way is the Andromeda Galaxy, about 2.5 million light-years away.",
-  "Pluto was reclassified as a dwarf planet in 2006 by the International Astronomical Union.",
-  "There are more than 100 billion galaxies in the observable universe."
-];
-
-// Function to fetch a random space fact
-function fetchSpaceFact() {
-  const randomIndex = Math.floor(Math.random() * spaceFacts.length);
-  const fact = spaceFacts[randomIndex];
-  document.getElementById("fact-text").innerText = fact;
-}
-
-// Space Trivia questions array
-const triviaQuestions = [
-  { question: "What is the closest planet to the Sun?", options: ["Venus", "Earth", "Mercury", "Mars"], answer: "Mercury" },
-  { question: "What is the largest planet in our solar system?", options: ["Jupiter", "Saturn", "Neptune", "Uranus"], answer: "Jupiter" },
-  { question: "Which planet is known as the Red Planet?", options: ["Mars", "Earth", "Venus", "Saturn"], answer: "Mars" },
-  { question: "What is the name of our galaxy?", options: ["Andromeda", "Milky Way", "Pinwheel", "Whirlpool"], answer: "Milky Way" },
-  { question: "What is the hottest planet in our solar system?", options: ["Venus", "Mercury", "Earth", "Mars"], answer: "Venus" },
-  { question: "Which planet has the most moons?", options: ["Jupiter", "Saturn", "Uranus", "Neptune"], answer: "Saturn" },
-  { question: "How many moons does Earth have?", options: ["1", "2", "3", "4"], answer: "1" },
-  { question: "Which planet is known for its beautiful rings?", options: ["Jupiter", "Saturn", "Neptune", "Uranus"], answer: "Saturn" }
-];
-
-// Space Trivia Question Logic
-let currentQuestionIndex = 0;
-
-function loadTriviaQuestion() {
-  const questionData = triviaQuestions[currentQuestionIndex];
-  document.getElementById("trivia-question").innerText = questionData.question;
-  
-  const optionsContainer = document.getElementById("trivia-options");
-  optionsContainer.innerHTML = '';
-  questionData.options.forEach(option => {
-      const button = document.createElement("button");
-      button.innerText = option;
-      button.onclick = () => checkTriviaAnswer(option);
-      optionsContainer.appendChild(button);
-  });
-
-  document.getElementById("trivia-feedback").innerText = '';
-}
-
-// Check if trivia answer is correct
-function checkTriviaAnswer(selectedOption) {
-  const correctAnswer = triviaQuestions[currentQuestionIndex].answer;
-  if (selectedOption === correctAnswer) {
-      document.getElementById("trivia-feedback").innerText = "Correct! Well done!";
-  } else {
-      document.getElementById("trivia-feedback").innerText = `Oops! The correct answer is: ${correctAnswer}.`;
-  }
-
-  setTimeout(() => {
-      currentQuestionIndex = (currentQuestionIndex + 1) % triviaQuestions.length;
-      loadTriviaQuestion();
-  }, 2000);
-}
-
-// Show the planner information (location, time, constellations)
+// Get the user's location and show planner info
 function showPlanner() {
-  document.getElementById("planner-output").innerText = "Getting your location...";
-
-  if ("geolocation" in navigator) {
+    document.getElementById("planner-output").innerText = "Getting your location...";
+  
+    if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-          position => {
-              const lat = position.coords.latitude;
-              const lon = position.coords.longitude;
-
-              const currentTime = new Date().toLocaleString();
-              document.getElementById("planner-output").innerText = 
-                `📍 Location: ${lat.toFixed(2)}, ${lon.toFixed(2)}\n🕒 Current Time: ${currentTime}`;
-
-              // Call the function to show visible constellations
-              showConstellationInfo(lat);
-          },
-          error => {
-              document.getElementById("planner-output").innerText = "❌ Geolocation error.";
-          }
+        position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+  
+          const currentTime = new Date().toLocaleString();
+          document.getElementById("planner-output").innerText = 
+            `📍 Location: ${lat.toFixed(2)}, ${lon.toFixed(2)}\n🕒 Current Time: ${currentTime}`;
+  
+          // Add the best time to stargaze
+          const bestTime = getBestStargazingTime();
+          document.getElementById("best-time").innerText = `🌙 Best Time to Stargaze: ${bestTime}`;
+  
+          // Call the function to show visible constellations
+          showConstellationInfo(lat);
+        },
+        error => {
+          document.getElementById("planner-output").innerText = "❌ Geolocation error.";
+        }
       );
-  } else {
+    } else {
       document.getElementById("planner-output").innerText = "❌ Geolocation not supported.";
+    }
   }
-}
-
-// Logic to determine which constellations are visible based on latitude and month
-function getVisibleConstellations(lat, month) {
-  const visible = [];
-
-  // Simplified rules for visible constellations
-  if (lat > -60 && lat < 60) {
-      if (month >= 10 || month <= 2) visible.push("Orion", "Taurus", "Capella");  // Winter
-      if (month >= 3 && month <= 7) visible.push("Ursa Major", "Leo", "Gemini");  // Spring/Summer
-      if (month >= 6 && month <= 9) visible.push("Scorpius", "Sagittarius");      // Summer/Fall
+  
+  // Determine the best time to go stargazing (General: Midnight to 3 AM)
+  function getBestStargazingTime() {
+    return "Between midnight and 3 AM, when skies are darkest.";
   }
-
-  return visible;
-}
-
-// Show constellation info based on location
-function showConstellationInfo(lat) {
-  const month = new Date().getMonth(); // 0 = Jan, 11 = Dec
-  const visible = getVisibleConstellations(lat, month);
-  const container = document.getElementById("constellation-info");
-  container.innerHTML = ""; // Clear previous
-
-  // Data for constellations
-  const data = {
-      "Orion": {
-          title: "Orion the Hunter",
-          description: "Visible in winter, Orion contains the bright stars Betelgeuse and Rigel.",
-      },
-      "Ursa Major": {
-          title: "Ursa Major (Big Dipper)",
-          description: "Visible in spring and summer, it's one of the most recognizable patterns.",
-      },
-      "Scorpius": {
-          title: "Scorpius the Scorpion",
-          description: "Visible in the summer with its bright red star Antares.",
-      },
-      "Leo": {
-          title: "Leo the Lion",
-          description: "Visible in spring, Leo is a large and distinctive constellation.",
-      },
-      "Taurus": {
-          title: "Taurus the Bull",
-          description: "Visible in winter and spring, Taurus contains the bright star Aldebaran.",
-      },
-      "Gemini": {
-          title: "Gemini the Twins",
-          description: "Visible in winter, Gemini is home to the stars Castor and Pollux.",
-      },
-      "Sagittarius": {
-          title: "Sagittarius the Archer",
-          description: "Visible in summer and fall, Sagittarius is known for its rich star fields.",
-      }
+  
+  // Determine visible constellations by month and location
+  function getVisibleConstellations(lat, month) {
+    const visible = [];
+  
+    if (lat > -60 && lat < 60) {
+      if (month >= 10 || month <= 2) visible.push("Orion", "Taurus", "Capella", "Canis Major", "Eridanus");
+      if (month >= 3 && month <= 7) visible.push("Ursa Major", "Leo", "Gemini", "Bootes", "Virgo");
+      if (month >= 6 && month <= 9) visible.push("Scorpius", "Sagittarius", "Aquila", "Lyra", "Hercules");
+      visible.push("Cassiopeia", "Cygnus", "Draco", "Andromeda", "Pegasus"); // Circumpolar/Year-round
+    }
+  
+    return visible;
+  }
+  
+  // Data for each constellation
+  const constellationData = {
+    "Orion": {
+      title: "Orion the Hunter",
+      description: "Visible in winter, Orion contains the bright stars Betelgeuse and Rigel."
+    },
+    "Taurus": {
+      title: "Taurus the Bull",
+      description: "Visible in winter and spring, it contains Aldebaran and the Pleiades cluster."
+    },
+    "Capella": {
+      title: "Capella (The She-Goat)",
+      description: "One of the brightest stars in the winter sky, part of the Auriga constellation."
+    },
+    "Canis Major": {
+      title: "Canis Major",
+      description: "Home to Sirius, the brightest star in the night sky, visible in winter."
+    },
+    "Eridanus": {
+      title: "Eridanus",
+      description: "A long winding constellation representing a river, best seen in late fall and winter."
+    },
+    "Ursa Major": {
+      title: "Ursa Major (Big Dipper)",
+      description: "One of the most recognizable patterns, visible in spring and summer."
+    },
+    "Leo": {
+      title: "Leo the Lion",
+      description: "Visible in spring, Leo is large and distinctive with Regulus as its brightest star."
+    },
+    "Gemini": {
+      title: "Gemini the Twins",
+      description: "Visible in winter, Gemini is home to the stars Castor and Pollux."
+    },
+    "Bootes": {
+      title: "Boötes the Herdsman",
+      description: "Visible in spring and summer, Arcturus is its brightest star."
+    },
+    "Virgo": {
+      title: "Virgo the Maiden",
+      description: "Visible in spring, contains the bright star Spica."
+    },
+    "Scorpius": {
+      title: "Scorpius the Scorpion",
+      description: "Visible in the summer with its bright red star Antares."
+    },
+    "Sagittarius": {
+      title: "Sagittarius the Archer",
+      description: "Visible in summer, near the center of the Milky Way."
+    },
+    "Aquila": {
+      title: "Aquila the Eagle",
+      description: "Visible in summer, Altair is its brightest star."
+    },
+    "Lyra": {
+      title: "Lyra the Harp",
+      description: "Visible in summer, home to the bright star Vega."
+    },
+    "Hercules": {
+      title: "Hercules",
+      description: "Visible in summer, contains the Great Hercules Cluster (M13)."
+    },
+    "Cassiopeia": {
+      title: "Cassiopeia",
+      description: "A W-shaped constellation, visible year-round in northern skies."
+    },
+    "Cygnus": {
+      title: "Cygnus the Swan",
+      description: "Visible in summer, contains the bright star Deneb."
+    },
+    "Draco": {
+      title: "Draco the Dragon",
+      description: "A circumpolar constellation winding around Ursa Minor."
+    },
+    "Andromeda": {
+      title: "Andromeda",
+      description: "Visible in autumn, home to the Andromeda Galaxy (M31)."
+    },
+    "Pegasus": {
+      title: "Pegasus",
+      description: "Visible in autumn, contains the Great Square of Pegasus."
+    }
   };
-
-  // Render visible constellations
-  visible.forEach(constellation => {
+  
+  // Show constellation info boxes
+  function showConstellationInfo(lat) {
+    const month = new Date().getMonth();
+    const visible = getVisibleConstellations(lat, month);
+    const container = document.getElementById("constellation-info");
+    container.innerHTML = "";
+  
+    visible.forEach(name => {
       const card = document.createElement("div");
-      card.classList.add("constellation-card");
-      card.innerHTML = `
-          <h3>${data[constellation].title}</h3>
-          <p>${data[constellation].description}</p>
-      `;
+      card.className = "constellation-card";
+      card.innerHTML = `<h3>${constellationData[name].title}</h3><p>${constellationData[name].description}</p>`;
       container.appendChild(card);
-  });
-}
-
-// Fetch the Space Fact of the Day when the page loads
-fetchSpaceFact();
-
-// Load the first trivia question when the page loads
-loadTriviaQuestion();
+    });
+  }
+  
+  // Space Facts - Static and reliable
+const spaceFacts = [
+    "A day on Venus is longer than a year on Venus.",
+    "Neutron stars can spin 600 times per second.",
+    "The largest known star is over 2,000 times wider than our Sun.",
+    "There are more stars in the universe than grains of sand on Earth.",
+    "The Sun accounts for 99.86% of the mass in our solar system.",
+    "Jupiter has at least 79 moons.",
+    "The footprints on the Moon will likely remain there for millions of years.",
+    "One spoonful of a neutron star would weigh about a billion tons.",
+    "A year on Mercury is just 88 Earth days long.",
+    "Light from the Sun takes about 8 minutes and 20 seconds to reach Earth.",
+    "Pluto's orbit is so eccentric, it sometimes comes closer to the Sun than Neptune.",
+    "The Moon is slowly drifting away from the Earth at a rate of 1.5 inches per year.",
+    "Mars has the tallest mountain in the solar system — Olympus Mons.",
+    "The Milky Way is on a collision course with the Andromeda galaxy.",
+    "Saturn could float in water because it's mostly made of gas.",
+    "Black holes can slow down time relative to outside observers.",
+    "It rains diamonds on Neptune and Uranus.",
+    "The Moon has quakes, called 'moonquakes'.",
+    "There’s a planet that rains molten glass sideways (HD 189733b).",
+    "Astronauts grow taller in space due to spinal decompression.",
+    "The Sun is a nearly perfect sphere — it's only 10 km wider at the equator than at the poles.",
+    "Earth is the only planet not named after a mythological god.",
+    "Saturn’s rings are made mostly of ice particles with some dust and rock.",
+    "Comets have two tails: one of gas and one of dust.",
+    "Mercury has no atmosphere, so temperatures swing wildly from hot to cold.",
+    "The Hubble Space Telescope travels around Earth at about 5 miles per second.",
+    "Our galaxy, the Milky Way, is estimated to contain 100–400 billion stars.",
+    "Venus spins backward compared to most planets in our solar system.",
+    "There are rogue planets that float through space without orbiting a star.",
+    "Sunspots are cooler areas on the Sun’s surface caused by magnetic activity.",
+    "The Kuiper Belt is a region beyond Neptune filled with icy bodies and dwarf planets.",
+    "A full NASA spacesuit costs around $12 million.",
+    "The Voyager 1 spacecraft is the farthest human-made object from Earth.",
+    "No sound can travel through space because there is no air.",
+    "The James Webb Space Telescope can see light from over 13 billion years ago.",
+    "Astronauts’ hearts become more spherical in microgravity.",
+    "There is a giant storm on Jupiter called the Great Red Spot that’s over 300 years old.",
+    "One day on Jupiter lasts about 10 Earth hours.",
+    "You would weigh 1/6 as much on the Moon as you do on Earth.",
+    "It takes 243 Earth days for Venus to complete one rotation on its axis."
+  
+  ];
+  
+  // Choose one based on the day of the year
+  function showSpaceFact() {
+    const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+    const fact = spaceFacts[dayOfYear % spaceFacts.length];
+    document.getElementById("fact-text").innerText = fact;
+  }
+  
+  // Run this when the page loads
+  window.onload = () => {
+    showSpaceFact();
+    // Any other init code you want can also go here
+  };
